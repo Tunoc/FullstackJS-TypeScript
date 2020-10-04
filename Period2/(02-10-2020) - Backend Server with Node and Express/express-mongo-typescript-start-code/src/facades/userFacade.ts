@@ -5,28 +5,25 @@ interface IGameUser { name: string, email: string, password: string, role: strin
 const users: Array<IGameUser> = [];
 class UserFacade {
     static addUser(user: IGameUser): boolean {
-        /*Info: Import bcryptjs and (npm install bcryptjs) and hash before you store */
         try {
-            var salt = bcrypt.genSaltSync(10);
-            var hashedPsw = bcrypt.hashSync(user.password, salt);
-            user.password = hashedPsw;
-            users.push(user);
-            return true;
+            return bcrypt.hash(user.password, 10) //auto gen salt - https://www.npmjs.com/package/bcryptjs
+                .then((hashedPsw: string) => {
+                    user.password = hashedPsw;
+                    users.push(user);
+                    return true;
+                })
         } catch (error) {
             debug(error)
-            throw new Error("Error occured while trying to add user");
+            return false;
         }
     }
     static deleteUser(email: string): boolean {
-        try {
-            //let removeIndex = users.findIndex(user => user == this.getUser(email));
-            let removeIndex = users.findIndex(user => user.email == email);
+        let removeIndex = users.findIndex(user => user.email == email);
+        if (removeIndex != -1) {
             users.splice(removeIndex, 1);
             return true;
-        } catch (error) {
-            debug(error)
-            throw new Error("Error occured while trying to delete user");
         }
+        return false;
     }
     static getAllUsers(): Array<IGameUser> {
         return users;
@@ -47,7 +44,7 @@ class UserFacade {
         try {
             let userCheck = this.getUser(email);
             let doesExist = bcrypt.compareSync(password, userCheck.password);
-            return doesExist ? true : false; //Tennary for true false result.   
+            return doesExist ? true : false; //Tennary for true false result.
         } catch (error) {
             debug(error)
             throw new Error("Error occured while checking user");

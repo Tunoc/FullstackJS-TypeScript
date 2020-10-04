@@ -7,13 +7,18 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.json())
 
-
 app.get("/api/dummy", (req, res) => {
   res.json({ msg: "Hello" })
 })
 
 app.get("/api/users/:email", (req, res) => {
-  res.send(UserFacade.getUser(req.params.email));
+  try {
+    res.send(UserFacade.getUser(req.params.email));
+  } catch (error) {
+    debug(error);
+    res.status(404).send("User not found");
+    //res.sendStatus(200); // What is perfered?
+  }
 })
 
 app.get("/api/users", (req, res) => {
@@ -22,21 +27,50 @@ app.get("/api/users", (req, res) => {
 
 app.post("/api/users", (req, res) => {
   let { name, email, password, role } = req.body;
-  if (name && email && password && role) { //Check if the values aren't null, undefined, and empty string
-    if (UserFacade.addUser({ name, email, password, role })) { //duck-typing
+  if (name && email && password && role) { //Check if the values are truthy <- not null, not undefined, not empty string and so on.
+    if (UserFacade.addUser({ name, email, password, role })) {
       res.send({ msg: "User was added" })
-      return;//Return here to ship the User wasn't added <- alternative 2 else clauses.
+      //res.sendStatus(200); //This line is equivalent to res.status(200).send("OK")
+    } else {
+      res.sendStatus(500);
+      //We couldn't add the user to our list, therfore we send a "Internal Server Error"
     }
+  } else {
+    res.sendStatus(400);
+    //Bad request if we aren't given a json object that looks like a "IGameUser"
   }
-  res.send({ msg: "User wasn't added" })
 })
 
 app.delete("/api/users/:email", (req, res) => {
   if (UserFacade.deleteUser(req.params.email)) {
     res.send({ msg: "User was deleted" })
+    //res.sendStatus(200);
   } else {
-    res.send({ msg: "User wasn't deleted" })
+    res.sendStatus(404);
+    //res.send({ msg: "User wasn't deleted" })
   }
+})
+
+// Dummy data setup - Remove later.
+app.get("/api/usersDummyData", (req, res) => {
+  let users = [{
+    "name": "Tunoc",
+    "email": "Tunoc@ApeMail.com",
+    "password": "PsWStronk1",
+    "role": "Admin"
+  }, {
+    "name": "DummyUser",
+    "email": "DummyUser@ApeMail.com",
+    "password": "PsWStronk2",
+    "role": "User"
+  }, {
+    "name": "Random user",
+    "email": "random@ApeMail.com",
+    "password": "PsWStronk3",
+    "role": "User"
+  }]
+  users.forEach(user => UserFacade.addUser(user));
+  res.send("Dummy Data Created");
 })
 
 const PORT = process.env.PORT || 3333;
