@@ -52,7 +52,7 @@ app.delete("/api/users/:email", (req, res) => {
 })
 
 // Dummy data setup - Remove later.
-app.get("/api/usersDummyData", (req, res) => {
+app.get("/api/DummyData", (req, res) => {
   let users = [{
     "name": "Tunoc",
     "email": "Tunoc@ApeMail.com",
