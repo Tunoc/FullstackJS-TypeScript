@@ -23,7 +23,7 @@ exports.calculator = function () {
         },
         divide: function (num) {
             checkIfNumbers(num);
-            if (num == 0 || total == 0) {
+            if (num == 0) {
                 throw new Error("Attempt to divide by zero")
             }
             total = total / num;

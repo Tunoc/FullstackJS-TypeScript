@@ -90,7 +90,8 @@ describe("Calculator four standard arithmetic operations", function () {
 
         it("Divide a by 0", function () {
             try {
-                calc.divide(2);
+                calc.addition(5);
+                calc.divide(0);
             } catch (err) {
                 expect(err.message).to.equal("Attempt to divide by zero");
             }
