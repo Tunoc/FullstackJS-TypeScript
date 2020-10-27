@@ -25,14 +25,10 @@ describe("Calculator four standard arithmetic operations", function () {
         });
 
         it("Adds a string", function () {
-            //let badFn = function () { throw new TypeError('Illegal salmon!'); };
-            //expect(badFn).to.throw(TypeError, "Illegal salmon!");
-            //expect(calc.addition("s")).to.throw(Error, "Parameter is not a number"); //<- Should work according to Chai - https://www.chaijs.com/api/bdd/#method_throw
-            try {
+            const expectingError = function () {
                 calc.addition("s");
-            } catch (err) {
-                expect(err.message).to.equal("Parameter is not a number");
             }
+            expect(expectingError).to.throw(Error, "Parameter is not a number");
         })
     });
 
@@ -45,11 +41,10 @@ describe("Calculator four standard arithmetic operations", function () {
         });
 
         it("Subtract a string", function () {
-            try {
+            const expectingError = function () {
                 calc.subtract("s");
-            } catch (err) {
-                expect(err.message).to.equal("Parameter is not a number");
             }
+            expect(expectingError).to.throw(Error, "Parameter is not a number");
         })
     });
 
@@ -62,12 +57,11 @@ describe("Calculator four standard arithmetic operations", function () {
         });
 
         it("Multiply a string", function () {
-            try {
+            const expectingError = function () {
                 calc.addition(5);
                 calc.multiply("2");
-            } catch (err) {
-                expect(err.message).to.equal("Parameter is not a number");
             }
+            expect(expectingError).to.throw(Error, "Parameter is not a number");
         })
     });
 
@@ -80,12 +74,11 @@ describe("Calculator four standard arithmetic operations", function () {
         });
 
         it("Divide a string", function () {
-            try {
+            const expectingError = function () {
                 calc.addition(10);
                 calc.divide("2");
-            } catch (err) {
-                expect(err.message).to.equal("Parameter is not a number");
             }
+            expect(expectingError).to.throw(Error, "Parameter is not a number");
         })
 
         it("Divide a by 0", function () {
