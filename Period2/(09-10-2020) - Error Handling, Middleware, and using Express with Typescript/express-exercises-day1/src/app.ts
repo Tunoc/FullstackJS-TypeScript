@@ -25,11 +25,12 @@ app.get("/api/dummy", (req, res) => {
   res.json({ msg: "Hello" })
 })
 
+app.use(logger.exWinstonLogError);
+
 //Error handlers
 app.use(endpointNotFound)
 app.use(errorFormatter)
 
-app.use(logger.exWinstonLogError);
 
 const PORT = process.env.PORT || 3333;
 const server = app.listen(PORT)
