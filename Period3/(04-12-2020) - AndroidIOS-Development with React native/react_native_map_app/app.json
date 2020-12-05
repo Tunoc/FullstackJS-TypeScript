@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-complete-guide",
-    "slug": "rn-complete-guide",
+    "name": "expo-map-app",
+    "slug": "expo-map-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "Simple map with login and logout function.\nWe can see other \"players, location on the map, when we are logged in\".\n",
+    "githubUrl": "https://github.com/Tunoc/FullstackJS-TypeScript/tree/master/Period3/(04-12-2020)%20-%20AndroidIOS-Development%20with%20React%20native/react_native_map_app"
   }
 }
