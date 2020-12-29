@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Index.html</h1>
+    <button onclick="rollDice()">Roll Dice</button>
+    <p>Result</p>
+    <div id="result"></div>
+
+
+    <script>
+        function rollDice() {
+            let dice = 3;
+            let sides = 6;
+            let query = `query RollDice($dice: Int!, $sides: Int) {
+  rollDice(numDice: $dice, numSides: $sides)
+}`;
+
+            fetch('/graphql', {
+                method: 'POST', //Der er kun 1 endpoint med graphql - Derfor kan man kun bruge post dertil.
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    query,
+                    variables: { dice, sides },
+                })
+            })
+                .then(r => r.json())
+                .then(r => {
+                    console.log('data returned:', r)
+                    document.getElementById("result").innerText = r.data.rollDice
+                });
+        }
+    </script>
+
+</body>
+
+</html>
